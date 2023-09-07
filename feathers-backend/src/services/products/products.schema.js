@@ -14,16 +14,20 @@ export const productsSchema = Type.Object(
         longDescription: Type.String(),
         price: Type.Number(),
         image: Type.String(),
-        categoryId: Type.Optional(ObjectIdSchema())
+        categoryId: Type.Optional(ObjectIdSchema()),
+
 
     },
     {$id: 'Products', additionalProperties: false}
 )
 export const productsValidator = getValidator(productsSchema, dataValidator)
 export const productsResolver = resolve({
-    // category: virtual(async (product, context) => {
-    //     return context.app.service('categories').get(product.categoryId)
-    // })
+    category: virtual(async (product, context) => {
+        if(product?.categoryId) {
+            return context.app.service('categories').get(product?.categoryId)
+        }
+        return null;
+    })
 })
 
 export const productsExternalResolver = resolve({})

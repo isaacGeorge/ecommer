@@ -1,4 +1,5 @@
 import {component$} from "@builder.io/qwik";
+import Image from '~/images/larm-rmah-R1Ku62Z7zqE-unsplash.jpeg?jsx';
 
 export default component$(() => {
     return (
@@ -9,33 +10,49 @@ export default component$(() => {
                 <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
                     {/*Item 1*/}
                     <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="/images/larm-rmah-R1Ku62Z7zqE-unsplash.jpeg"
+                        <img src="https://images.unsplash.com/photo-1575939238474-c8ada13b2724?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
                              class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                             alt="..."/>
+                             alt="..."
+                             width='100'
+                             height='100'
+                        />
+
                     </div>
                     {/*Item 2*/}
                     <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                        <img src="/images/brooke-cagle-aVT8VkmzML4-unsplash.jpeg"
+                        <img src="https://images.unsplash.com/photo-1612731486606-2614b4d74921?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2020&q=80"
                              class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                             alt="..."/>
+                             alt="..."
+                             width='100'
+                             height='100'
+                        />
                     </div>
                     {/*Item 3*/}
                     <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="/images/chris-ghinda-wK2ESlRRZQ8-unsplash.jpeg"
+                        <img src="https://images.unsplash.com/photo-1516763296043-f676c1105999?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2043&q=80"
                              class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                             alt="..."/>
+                             alt="..."
+                             width='1920'
+                             height='1080'
+                        />
                     </div>
                     {/*Item 4*/}
                     <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="/images/jc-gellidon-JM8TkWJ9UIY-unsplash.jpeg"
+                        <img src="https://images.unsplash.com/photo-1538329972958-465d6d2144ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
                              class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                             alt="..."/>
+                             alt="..."
+                             width='1920'
+                             height='1080'
+                        />
                     </div>
                     {/*Item 5*/}
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="/images/larm-rmah-R1Ku62Z7zqE-unsplash.jpeg"
-                             alt="..."/>
-                    </div>
+                    {/*<div class="hidden duration-700 ease-in-out" data-carousel-item>*/}
+                    {/*    <img src="https://images.unsplash.com/photo-1575939238474-c8ada13b2724?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"*/}
+                    {/*         alt="..."*/}
+                    {/*         width='100'*/}
+                    {/*         height='100'*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                 </div>
                 {/*Slider controls*/}
                 <button type="button"

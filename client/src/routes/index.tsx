@@ -63,9 +63,10 @@ export default component$(() => {
                     <h1 class='text-xl text-center mt-16 mb-8'>Our featured <span class='font-bold'>Products</span>
                     </h1>
                     {/*tabs here*/}
-                    <div class='flex justify-center flex-nowrap mb-10'>
-                        <div class="tabs !flex-nowrap overflow-x-auto ">
-                            {tabs.map((tab,index) => {
+                    {/*<div className='flex justify-center mb-10 items-center md:flex-row'>*/}
+                    <div class='sm:flex flex-row justify-center mb-10 items-center '>
+                        <div class="mb-3 sm:mb-0">
+                            {tabs.map((tab, index) => {
                                 return (
                                     <a
                                         key={index}
@@ -73,21 +74,25 @@ export default component$(() => {
                                         onclick$={() => activeTab.value = tab.name}>
                                         {tab.label}
                                     </a>
-
-
-
-
-                            )
+                                )
                             })}
                         </div>
+                        <div>
+                        <input
+                            bind:value={query}
+                            placeholder='Search'
+                            class='border-2 border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-500 focus:text-gray-600 px-4 h-[45px] rounded-full ml-2'/>
+                        </div>
                     </div>
+
+
                     <div
                         class='grid grid-cols-1 min-w-[300px]   gap-4 sm:grid-cols-3 lg:grid-cols-4 sm:px-8 lg:px-32  justify-center items-center'>
                         {productsData.value.map((product, index) => {
 
                             return (
                                 <>
-                                <ProductCard {...product} />
+                                    <ProductCard {...product} />
 
                                 </>
 
@@ -95,16 +100,14 @@ export default component$(() => {
                         })}
                     </div>
                 </div>
-                <Subscribe />
+                <Subscribe/>
             </div>
-
-
         </div>
     );
 });
 
 export const head: DocumentHead = {
-    title: "Welcome to Qwik",
+    title: "Max Homepage",
     meta: [
         {
             name: "description",

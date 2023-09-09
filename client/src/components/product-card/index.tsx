@@ -18,7 +18,7 @@ export default component$<ProductProps>((props) => {
     // @ts-ignore
     return (
 
-        <div class='flex flex-col bg-white  shadow-xl rounded-md overflow-clip'>
+        <div class='grid bg-white  shadow-xl rounded-md overflow-clip'>
             <div class='w-full h-[200px]'>
                 <img height='400' width='400' class='w-full h-full object-cover object-top' src={props.image} alt={props.name}/>
             </div>

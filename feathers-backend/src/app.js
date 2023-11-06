@@ -42,7 +42,13 @@ app.hooks({
   around: {
     all: [logError]
   },
-  before: {},
+  before: {
+    create: [
+      context => {
+        return context
+      },
+    ]
+  },
   after: {},
   error: {}
 })

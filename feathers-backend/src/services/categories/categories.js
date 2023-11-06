@@ -43,7 +43,11 @@ export const categories = (app) => {
       ],
       find: [],
       get: [],
+
       create: [
+          context => {
+        return context
+          },
         schemaHooks.validateData(categoriesDataValidator),
         schemaHooks.resolveData(categoriesDataResolver)
       ],
@@ -54,10 +58,18 @@ export const categories = (app) => {
       remove: []
     },
     after: {
-      all: []
+      all: [
+        context => {
+          return context
+        },
+      ]
     },
     error: {
-      all: []
+      all: [
+        context => {
+          return context
+        },
+      ]
     }
   })
 }

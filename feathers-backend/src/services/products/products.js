@@ -44,6 +44,9 @@ export const products = (app) => {
       find: [],
       get: [],
       create: [
+        context => {
+          return context
+        },
         schemaHooks.validateData(productsDataValidator),
         schemaHooks.resolveData(productsDataResolver)
       ],
@@ -54,10 +57,18 @@ export const products = (app) => {
       remove: []
     },
     after: {
-      all: []
+      all: [
+        context => {
+          return context
+        }
+      ]
     },
     error: {
-      all: []
+      all: [
+        context => {
+          return context
+        }
+      ]
     }
   })
 }

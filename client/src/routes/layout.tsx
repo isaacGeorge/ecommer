@@ -5,7 +5,7 @@ import {
     Slot,
     useContextProvider,
     useSignal,
-    useStore,
+    useStore, useTask$,
     useVisibleTask$
 } from "@builder.io/qwik";
 import type {RequestHandler} from "@builder.io/qwik-city";
@@ -26,46 +26,65 @@ export const onGet: RequestHandler = async ({cacheControl}) => {
     });
 };
 
+export interface PriceType{
+    currency: string,
+    amount: number
+}
+
 
 export interface ProductsType {
     "_id": string
     "name": string
     "shortDescription"?: string
     "longDescription"?: string
-    "price": number
+    "price": PriceType
     "category": CategoryType
     "image": string
 }
+
 
 export interface CategoryType {
     "name": string
     "_id": string
 }
 
-export interface CartItem{
+export interface CartItem {
     "_id": string
     "name"?: string
     "qty": number
     "shortDescription"?: string
     "longDescription"?: string
-    "price"?: number
+    "price"?: PriceType
     "category"?: CategoryType
     "image"?: string
-
 
 
 }
 
 export const useProductsData = routeLoader$<ProductsType[]>(async () => {
     try {
-        const {data} = await client.service('products').find();
+        const productService = client.service('products');
+        const {data} = await productService.find();
+        productService.on("created", (newProduct)=> {
+            console.log(newProduct)
+        })
         return data;
     } catch (e) {
         console.log(e)
     }
 });
 
-export const ProductsContextId = createContextId<ProductsType[]>('products');
+export const useCategoriesData = routeLoader$<CategoryType[]>(async () => {
+    try {
+        const {data} = await client.service('categories').find();
+        return data;
+    } catch (e) {
+        console.log(e)
+    }
+})
+
+export const ProductsContextId = createContextId<Signal <ProductsType[]>>('products');
+export const CategoryContextId = createContextId<Signal <CategoryType[]>>('categories');
 export const QueryContextId = createContextId<Signal<string>>("query");
 export const QtyContextId = createContextId<Signal<number>>("qty");
 export const CartContextId = createContextId<Signal<CartItem[]>>("cart")
@@ -73,23 +92,36 @@ export const CartContextId = createContextId<Signal<CartItem[]>>("cart")
 export default component$(() => {
 //////////////// Variables
     const products = useProductsData();
+    const categories = useCategoriesData();
     const query = useSignal<string>("");
     const qty = useSignal<number>(1);
     const cart = useSignal<CartItem[]>([])
 
 /////////////////Context providers declarations
-    useContextProvider(ProductsContextId, products.value);
+    useContextProvider(ProductsContextId, products);
+    useContextProvider(CategoryContextId, categories)
     useContextProvider(QueryContextId, query);
     useContextProvider(QtyContextId, qty);
     useContextProvider(CartContextId, cart);
 
-    useVisibleTask$(()=>{
+    useVisibleTask$(() => {
         // when reload === initialize cart from localStorage
         const localStorageCart = localStorage.getItem('cart')
-        if(localStorageCart) {
+        if (localStorageCart) {
             cart.value = JSON.parse(localStorageCart)
         }
     })
+
+    client.service('categories').on('created', (data) => {
+        console.log('Got created event', data)
+    })
+
+    useTask$(({track}) => {
+        // A task without `track` any state effectively behaves like a `on mount` hook.
+        track(()=> categories.value)
+        console.log('Runs once when the component mounts in the server OR client.');
+
+    });
     return (
         <div>
             <MainNavbar/>

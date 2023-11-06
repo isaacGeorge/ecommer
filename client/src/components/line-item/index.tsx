@@ -7,69 +7,68 @@ import {CartContextId, CartItem, ProductsContextId} from "~/routes/layout";
 // }
 
 
-
-export default component$((props:{item: CartItem}) =>{
+export default component$((props: { item: CartItem }) => {
     const products = useContext(ProductsContextId);
     const cart = useContext(CartContextId);
 
     const lineItem = useComputed$(() => {
-
-        const product = products.find(prod => prod._id === props.item._id)
+        const product = products.value.find(prod => prod._id === props.item._id)
         // item is a prop and props are not reactive https://discord.com/channels/842438759945601056/1077376577928708116
         // so we use the cart item from store instead of props.item
         const cartFromStore = cart.value.find(itm => itm._id == props.item._id)
         return {
             name: product?.name,
-            unitPrice: product?.price,
+            unitPrice: product?.price.amount,
             image: product?.image,
             shortDescription: product?.shortDescription,
             ...cartFromStore
         }
     })
 
-    const  qty = useSignal(0)
+    const qty = useSignal(0)
 
-    useVisibleTask$(({track})=> {
+    useVisibleTask$(({track}) => {
         track(() => lineItem.value)
-       qty.value = lineItem.value.qty as number
+        qty.value = lineItem.value.qty as number
     })
 
-    const changeItemQty = $((val: string)=>{
-        qty.value = parseInt(val,10)
-        cart.value = cart.value.map((itm)=>{
-            if(itm._id == props.item._id) {
-                itm.qty = parseInt(val,10)
+    const changeItemQty = $((val: string) => {
+        qty.value = parseInt(val, 10)
+        cart.value = cart.value.map((itm) => {
+            if (itm._id == props.item._id) {
+                itm.qty = parseInt(val, 10)
             }
             return itm;
         })
-        localStorage.setItem('cart',JSON.stringify(cart.value))
+        localStorage.setItem('cart', JSON.stringify(cart.value))
     })
-    const removeFromCart = $((e: Event)=>{
+    const removeFromCart = $((e: Event) => {
         e.preventDefault()
         cart.value = cart.value.filter(itm => itm._id !== props.item._id)
-        localStorage.setItem('cart',JSON.stringify(cart.value))
+        localStorage.setItem('cart', JSON.stringify(cart.value))
     })
 
-    const total = useComputed$(()=>(lineItem.value.unitPrice || 0) * qty.value)
+    const total = useComputed$(() => (lineItem.value.unitPrice || 0) * qty.value)
 
     return (<div style='display: flex; gap:5px;'>
-    {/*    <input*/}
-    {/*        min={1}*/}
-    {/*        type='number'*/}
-    {/*        value={qty.value}*/}
-    {/*        onInput$={(event, element) => changeItemQty(element.value) }*/}
-    {/*    />*/}
-    {/*    <div>{lineItem.value.name}{qty.value > 1 ? 's': ''}</div>*/}
-    {/*    <div> at </div>*/}
-    {/*    <div>$<strong>{total.value}</strong></div>*/}
-    {/*<div>*/}
-    {/*    <button  onclick$={removeFromCart}>x</button>*/}
-    {/*</div>*/}
+
+        {/*    <input*/}
+        {/*        min={1}*/}
+        {/*        type='number'*/}
+        {/*        value={qty.value}*/}
+        {/*        onInput$={(event, element) => changeItemQty(element.value) }*/}
+        {/*    />*/}
+        {/*    <div>{lineItem.value.name}{qty.value > 1 ? 's': ''}</div>*/}
+        {/*    <div> at </div>*/}
+        {/*    <div>$<strong>{total.value}</strong></div>*/}
+        {/*<div>*/}
+        {/*    <button  onclick$={removeFromCart}>x</button>*/}
+        {/*</div>*/}
 
 
-    {/*    //////////////////////*/}
+        {/*    //////////////////////*/}
 
-        <div  class=' w-screen  md:w-full sm:flex p-4 gap-3 mb-3 border-b border-gray-400'>
+        <div class=' w-screen  md:w-full sm:flex p-4 gap-3 mb-3 border-b border-gray-400'>
             <div class='flex-auto'>
                 <img height='90' width='90' class='w-[140px] h-[140px] object-cover ' src={lineItem.value.image}
                      alt={lineItem.value.name}/>
@@ -85,6 +84,7 @@ export default component$((props:{item: CartItem}) =>{
                 <p class='text-xl'>{lineItem.value.unitPrice} USD</p>
                 <div class='flex flex-row  space-x-3 mt-8'>
                     <button
+                        onclick$={() => {if(qty.value > 1){qty.value--}}}
                         class='bg-orange-500 w-8 h-8 rounded-md shadow-md text-white text-md cursor-pointer'>-
                     </button>
                     <p>{qty.value}</p>
@@ -94,8 +94,9 @@ export default component$((props:{item: CartItem}) =>{
                     </button>
                 </div>
                 <button
+                   onclick$={removeFromCart}
                     class='text-red-700 text-sm cursor-pointer '>
-                    <ion-icon onclick$={removeFromCart} class='mr-2' name="trash-bin"></ion-icon>
+                    <ion-icon class='mr-2' name="trash-bin"></ion-icon>
                     Remove
                 </button>
             </div>

@@ -26,10 +26,10 @@ export const onGet: RequestHandler = async ({cacheControl}) => {
         maxAge: 5,
     });
 };
-export const ActiveCategoryContextId = createContextId <Signal<string>>('activeCategory');
+// export const ActiveCategoryContextId = createContextId <Signal<string>>('activeCategory');
 export default component$(() => {
-    const activeCategory = useSignal("");
-    useContextProvider(ActiveCategoryContextId, activeCategory);
+    // const activeCategory = useSignal("");
+    // useContextProvider(ActiveCategoryContextId, activeCategory);
 
     return (
         <div class='bg-gray-100 flex gap-3'>

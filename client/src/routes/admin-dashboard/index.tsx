@@ -1,16 +1,15 @@
 import {$, component$, QRL, Signal, useComputed$, useContext, useSignal, useStore} from "@builder.io/qwik";
 import {DocumentHead} from "@builder.io/qwik-city";
-import {CategoryContextId, PriceType, ProductsContextId, ProductsType} from "~/routes/layout";
+import {ActiveCategoryContextId, CategoryContextId, PriceType, ProductsContextId, ProductsType} from "~/routes/layout";
 import client, {useProducts} from "~/api/feathersAPI";
-import DashboardSideNav from "~/components/dashboard-side-nav";
-import {ActiveCategoryContextId} from "~/routes/admin-dashboard/layout";
+
 import CurrencyInput from "~/components/currencyInput";
 import {ProductProps} from "~/components/product-card";
 
 export default component$(() => {
     const dialog = useSignal<HTMLDialogElement>()
     const drawerOpen = useSignal<boolean>()
-    const selectedCategoryId = useContext(ActiveCategoryContextId);
+    const selectedCategoryId = useContext(ActiveCategoryContextId)
     const {products, productData, addProduct} = useProducts(selectedCategoryId) as {
         products: Signal<ProductsType[]>,
         productData: Signal<ProductsType>,

@@ -1,13 +1,12 @@
 import {$, component$, Signal, useContext, useSignal, useStore} from "@builder.io/qwik";
 import {CartContextId, CategoryContextId, useCategoriesData} from "~/routes/layout";
 import client, {useCategories} from "~/api/feathersAPI";
-import {ActiveCategoryContextId} from "~/routes/admin-dashboard/layout";
+import {ActiveCategoryContextId} from "~/routes/layout";
 
 
 export default component$(() => {
 
     const activeCategory = useContext(ActiveCategoryContextId);
-
     const dialog = useSignal<HTMLDialogElement>();
     // const categories = useContext(CategoryContextId)
     const {categories, createCategory} = useCategories()

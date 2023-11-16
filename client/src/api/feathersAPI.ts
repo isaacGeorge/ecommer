@@ -2,13 +2,18 @@ import io from 'socket.io-client'
 import {feathers} from '@feathersjs/feathers'
 import socketio from '@feathersjs/socketio-client'
 import {$, Signal, useContext, useSignal, useVisibleTask$} from "@builder.io/qwik";
-import {CategoryType, ProductsType} from "~/routes/layout";
-import {ActiveCategoryContextId} from "~/routes/admin-dashboard/layout";
+import {CategoryType, ProductsType, ActiveCategoryContextId} from "~/routes/layout";
+import {data} from "autoprefixer";
+import authentication from '@feathersjs/authentication-client'
 
 const socket = io(import.meta.env.PUBLIC_BACKEND_URL)
 const client = feathers()
 
+// Setup the transport (Rest, Socket, etc.) here
 client.configure(socketio(socket))
+
+// Available options are listed in the "Options" section
+client.configure(authentication())
 
 export default client
 type Query = {
@@ -20,7 +25,7 @@ type Params = {
     query?: Query
 }
 
-const selectedCategoryId = useContext(ActiveCategoryContextId);
+
 export const useProducts = (selectedCategoryId: Signal<string>) => {
     const productName = useSignal("");
     const products = useSignal<ProductsType[]>([]);
@@ -88,6 +93,7 @@ export const useProducts = (selectedCategoryId: Signal<string>) => {
 
 export const useCategories = () => {
     const categories = useSignal<CategoryType[]>([])
+    const selectedCategoryId = useContext(ActiveCategoryContextId)
 
     const findCategories = $(async () => {
         try {
@@ -103,10 +109,15 @@ export const useCategories = () => {
 
             await client.service('categories').create(
                 {name: newCategory.value}
+
             );
 
+
+
+
+            selectedCategoryId.value = newCategory.value
             await findCategories()
-            // selectedCategoryId.value = newCategory.value
+
             newCategory.value = '';
             dialog.value?.close()
         } catch (e) {

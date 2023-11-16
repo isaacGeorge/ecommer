@@ -61,6 +61,12 @@ export interface CartItem {
 
 }
 
+export interface User{
+    "_id": string
+    "name": string
+    "email": string
+}
+
 export const useProductsData = routeLoader$<ProductsType[]>(async () => {
     try {
         const productService = client.service('products');
@@ -88,7 +94,8 @@ export const CategoryContextId = createContextId<Signal <CategoryType[]>>('categ
 export const QueryContextId = createContextId<Signal<string>>("query");
 export const QtyContextId = createContextId<Signal<number>>("qty");
 export const CartContextId = createContextId<Signal<CartItem[]>>("cart")
-
+export const ActiveCategoryContextId = createContextId <Signal<string>>('activeCategory');
+export const AuthUserContextId = createContextId<Signal<User>>("authUser");
 export default component$(() => {
 //////////////// Variables
     const products = useProductsData();
@@ -96,6 +103,8 @@ export default component$(() => {
     const query = useSignal<string>("");
     const qty = useSignal<number>(1);
     const cart = useSignal<CartItem[]>([])
+    const activeCategory = useSignal<string>("");
+    const authUser = useSignal<User>();
 
 /////////////////Context providers declarations
     useContextProvider(ProductsContextId, products);
@@ -103,6 +112,8 @@ export default component$(() => {
     useContextProvider(QueryContextId, query);
     useContextProvider(QtyContextId, qty);
     useContextProvider(CartContextId, cart);
+    useContextProvider(ActiveCategoryContextId, activeCategory);
+    useContextProvider(AuthUserContextId, authUser);
 
     useVisibleTask$(() => {
         // when reload === initialize cart from localStorage
@@ -122,6 +133,18 @@ export default component$(() => {
         console.log('Runs once when the component mounts in the server OR client.');
 
     });
+
+    useVisibleTask$(async ()=>{
+        try{
+            await client.reAuthenticate();
+            const {user} = await client.get('authentication');
+            authUser.value = user
+        }
+        
+        catch (e) {
+            console.log(e)
+        }
+    })
     return (
         <div>
             <MainNavbar/>

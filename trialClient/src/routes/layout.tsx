@@ -1,5 +1,15 @@
-import { component$, Slot } from "@builder.io/qwik";
+import {
+  component$,
+  createContextId,
+  Signal,
+  Slot,
+  useContextProvider,
+  useSignal,
+  useVisibleTask$
+} from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
+import client from "~/api/feathersAPI";
+
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -12,6 +22,30 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
   });
 };
 
+export interface User{
+  "_id": string
+  "name": string
+  "email": string
+}
+
+
+export const AuthUserContextId = createContextId<Signal<User>>("authUser");
+
 export default component$(() => {
+
+  const authUser = useSignal<User>();
+  useContextProvider(AuthUserContextId, authUser);
+
+  useVisibleTask$(async ()=>{
+    try{
+      await client.reAuthenticate();
+      const {user} = await client.get('authentication');
+      authUser.value = user
+    }
+
+    catch (e) {
+      console.log(e)
+    }
+  })
   return <Slot />;
 });

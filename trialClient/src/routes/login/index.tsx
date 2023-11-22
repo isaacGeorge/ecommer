@@ -1,6 +1,7 @@
 import {$, component$, useSignal} from "@builder.io/qwik";
 import client from "~/api/feathersAPI";
 import {useNavigate} from "@builder.io/qwik-city";
+import {isServer} from "@builder.io/qwik/build";
 
 export default component$(() => {
     const email = useSignal("")
@@ -13,7 +14,10 @@ export default component$(() => {
             await client.authenticate(formData)
             email.value = "";
             password.value = "";
-            await navigate('/profile');
+            if(!isServer){
+                await navigate('/profile');
+            }
+
 
         } catch (e) {
             console.log(e)

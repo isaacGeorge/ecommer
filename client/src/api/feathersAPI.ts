@@ -107,11 +107,12 @@ export const useCategories = () => {
     const createCategory = $(async (newCategory: Signal<string>, dialog: Signal<HTMLDialogElement>) => {
         try {
 
-            await client.service('categories').create(
+            const newCat = await client.service('categories').create(
                 {name: newCategory.value}
 
             );
 
+            selectedCategoryId.value = newCat._id
             await findCategories()
 
             newCategory.value = '';

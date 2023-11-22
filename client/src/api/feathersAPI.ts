@@ -112,10 +112,6 @@ export const useCategories = () => {
 
             );
 
-
-
-
-            selectedCategoryId.value = newCategory.value
             await findCategories()
 
             newCategory.value = '';

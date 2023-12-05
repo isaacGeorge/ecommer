@@ -30,6 +30,7 @@ export const useProducts = (selectedCategoryId: Signal<string>) => {
     const productName = useSignal("");
     const products = useSignal<ProductsType[]>([]);
     const productData = useSignal<ProductsType>();
+
     const findProducts = $(async (params: Params = {}) => {
         console.log(productName.value)
         try {

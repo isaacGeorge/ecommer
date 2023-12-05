@@ -71,9 +71,9 @@ export const useProductsData = routeLoader$<ProductsType[]>(async () => {
     try {
         const productService = client.service('products');
         const {data} = await productService.find();
-        productService.on("created", (newProduct)=> {
-            console.log(newProduct)
-        })
+        // productService.on("created", (newProduct)=> {
+        //     console.log(newProduct)
+        // })
         return data;
     } catch (e) {
         console.log(e)

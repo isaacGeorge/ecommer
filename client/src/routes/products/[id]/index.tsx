@@ -10,7 +10,7 @@ export default component$(() => {
     const location = useLocation();
     const cart = useContext(CartContextId)
     const productDetails = useComputed$(() => {
-        return products.find(detail => detail._id === location.params.id)
+        return products.value.find(detail => detail._id === location.params.id)
     })
     const addToCart = $((_id: string, qt: number = 0) => {
         const cartItem: CartItem = {_id, qty: qt} as CartItem;
@@ -48,7 +48,7 @@ export default component$(() => {
                 </div>
                 <div class='w-8/12 flex flex-col space-y-4'>
                     <p class='text-xl'>{productDetails.value?.name.toUpperCase()}</p>
-                    <p class='h-14 bg-orange-500 text-white p-4 w-fit rounded-xl font-bold'>$ {qty.value * (productDetails.value?.price || 0)}</p>
+                    <p class='h-14 bg-orange-500 text-white p-4 w-fit rounded-xl font-bold'>$ {qty.value * (productDetails.value?.price.amount || 0)}</p>
                     <p class='text-md text-gray-500'>{productDetails.value?.longDescription}</p>
                     <div class='flex space-x-3 '>
                         <div class='flex flex-row gap-4 px-4 border justify-center items-center '>

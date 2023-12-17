@@ -32,9 +32,21 @@ export const categoriesDataValidator = getValidator(categoriesDataSchema, dataVa
 export const categoriesDataResolver = resolve({})
 
 // Schema for updating existing entries
-export const categoriesPatchSchema = Type.Partial(categoriesSchema, {
-    $id: 'CategoriesPatch'
-})
+export const categoriesPatchSchema = Type.Intersect([
+    Type.Partial(categoriesSchema, {
+        $id: 'CategoriesPatch'
+    }),
+
+    Type.Partial(categoriesSchema, {
+        $addToSet: Type.Object({
+            productIds: ObjectIdSchema()
+        }),
+        $pull: Type.Object({
+            productIds: ObjectIdSchema()
+        }),
+
+    })
+])
 export const categoriesPatchValidator = getValidator(categoriesPatchSchema, dataValidator)
 export const categoriesPatchResolver = resolve({})
 

@@ -12,7 +12,10 @@ export const productsSchema = Type.Object(
         name: Type.String(),
         shortDescription: Type.String(),
         longDescription: Type.String(),
-        price: Type.Number(),
+        price: Type.Object({
+            currency: Type.String(),
+            amount: Type.Number()
+        }),
         image: Type.String(),
         categoryId: Type.Optional(ObjectIdSchema()),
 

@@ -35,6 +35,7 @@ export default component$(() => {
         <ServiceWorkerRegister />
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script noModule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script type="module" src="./node_modules/flowbite/dist/flowbite.js"></script>
       </body>
     </QwikCityProvider>
   );

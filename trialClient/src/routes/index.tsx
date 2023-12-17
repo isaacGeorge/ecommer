@@ -6,7 +6,7 @@ import {
     Signal,
     useContextProvider,
     useSignal,
-    useTask$
+    useTask$, useVisibleTask$
 } from "@builder.io/qwik";
 import type {DocumentHead} from "@builder.io/qwik-city";
 import MyComponent from "~/components/myComponent";
@@ -14,6 +14,7 @@ import SodaGiver from "~/components/sodaGiver";
 import Isaac from "~/components/isaac";
 import Colors from "~/components/colors";
 import Emojis from "~/components/emojis/emojis";
+import {Link} from "@builder.io/qwik-city";
 
 
 const goodbye$ = $(() => alert('Goodbye'))
@@ -23,7 +24,7 @@ export const SelectedEmojiContextId = createContextId<Signal<string>>('SELECTEDE
 
 export default component$(() => {
     const color = useSignal<string>("");
-    const emoji = useSignal<string>("mic");
+    const emoji = useSignal<string>("☻");
     useContextProvider(ColorContextId, color);
     useContextProvider(SelectedEmojiContextId, emoji);
     const message = useSignal("Isaac");
@@ -37,7 +38,19 @@ export default component$(() => {
     const VideoOn = useSignal(false)
     const isHandRaised = useSignal(false)
     const reactionOn = useSignal(false)
+    const emojiWrapper = useSignal<HTMLDivElement>()
 
+
+    useVisibleTask$(({track})=>{
+        track(()=> isColorPanelOpen.value)
+        if (isColorPanelOpen.value){
+        //     add transition styles
+
+            emojiWrapper.value?.classList.add('visible', 'translate-y-5', 'bottom-20')
+        } else{
+        //     remove transition styles
+        }
+    })
 
     useTask$(({track}) => {
         track(() => didHeGetASodaSignal.value);
@@ -56,6 +69,9 @@ export default component$(() => {
             }
 
             <SodaGiver gotSodaSignal={didHeGetASodaSignal}/>
+            <Link href='/schedule'>
+                Schedule
+            </Link>
             <div class='flex flex-col items-center justify-center max-w-full'>
                 {/*<div style={`width: 200px; height: 200px; background-color: ${color.value}`}>*/}
                 {/*    <ion-icon name={emoji.value}></ion-icon>*/}
@@ -63,8 +79,8 @@ export default component$(() => {
 
                 <div
                     class='text-[200px]'
-                    style={`width: 200px; height: 200px; background-color: ${color.value}`}>
-                    <ion-icon name={emoji.value}></ion-icon>
+                    style={`width: 200px; height: 200px; color: ${color.value}`}>
+                    {emoji.value}
                 </div>
             </div>
 
@@ -117,12 +133,20 @@ export default component$(() => {
 
 
             </section>
-            {isColorPanelOpen.value ?
-                <div
-                    class={`flex items-center justify-center w-full transition ease-in-out delay-150  absolute  left-0 z-40 ${isColorPanelOpen.value ? "bottom-[95px]" : "bottom-10"}   `}>
+            {
+                // <div
+                //     class={`flex items-center justify-center w-full transition ease-in-out delay-150  absolute  left-0 z-40 ${isColorPanelOpen.value ? "bottom-[95px]" : "bottom-10"}   `}
+                //
+                // >
+                //     <Emojis/>
+                // </div>
+                <div ref={emojiWrapper}
+                    class={`flex invisible items-center justify-center w-full   absolute  left-0 z-40 transition ease-in-out delay-150 duration-300 bottom-16  `}
+
+                >
                     <Emojis/>
                 </div>
-                : null
+
 
             }
 

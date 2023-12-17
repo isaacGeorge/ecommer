@@ -39,3 +39,14 @@ body {
   padding: 0;
   line-height: inherit;
 }
+:root{
+  /*--fc-today-bg-color: rgba(255, 220, 40, 0.15);*/
+  --fc-today-bg-color: #FAEED1;
+
+
+  /*fc-button fc-button-primary fc-button-active*/
+}
+
+.fc-dayGridMonth-button{
+  background-color:  #5D3587;;
+}

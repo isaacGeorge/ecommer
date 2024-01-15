@@ -1,20 +1,15 @@
 import {component$, PropFunction, QRL, Signal, useSignal, useVisibleTask$} from "@builder.io/qwik";
 
-export interface PropTypes {
-    onChangeColor$: QRL<PropFunction<(color: string) => string>>
-}
 
-export default component$((props: PropTypes) => {
+
+export default component$(() => {
     const selectedColor = useSignal('#fec724')
     const colors = useSignal([
         '#fec724', '#e2c6a7', '#c7a786', '#a68063', '#926241', '#654c45'
     ]);
 
 
-    useVisibleTask$(async ({track}) => {
-        track(() => selectedColor.value)
-        await props.onChangeColor$(selectedColor.value)
-    })
+
 
 
     return (
@@ -22,11 +17,6 @@ export default component$((props: PropTypes) => {
         <div class='flex space-x-2 bg-zinc-800 w-fit p-2 rounded-full shadow-xl'>
             {colors.value.map((color) => {
                 return (
-                    // <div onclick$={() => selectedColor.value = color}>
-                    //     <input type='radio' id={color} value={color} name={color}
-                    //            checked={selectedColor.value === color}/>
-                    //     <label for={color}>{color}</label>
-                    // </div>
 
                     <div
                         onclick$={() => selectedColor.value = color}

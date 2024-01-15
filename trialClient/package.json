@@ -58,6 +58,7 @@
     "@fullcalendar/interaction": "^6.1.10",
     "@fullcalendar/react": "^6.1.10",
     "@fullcalendar/timegrid": "^6.1.10",
+    "@qwikest/icons": "^0.0.13",
     "socket.io-client": "^4.7.2"
   }
 }

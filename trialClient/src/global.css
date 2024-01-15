@@ -6,6 +6,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/*#checkbox:checked ~ .check-1{*/
+/*  @apply opacity-100;*/
+/*  animation: check-anime 0.5s 1;*/
+/*}*/
+
+/*@keyframes check-anime {*/
+/*  0%, 100%{*/
+/*    @apply transform scale-100;*/
+/*  }*/
+/*  50%{*/
+/*    @apply transform scale-150 opacity-0*/
+/*  }*/
+/*}*/
+
 /**
  * WHAT IS THIS FILE?
  *
